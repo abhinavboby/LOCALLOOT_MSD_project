@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LocalLoot - Sell to Your Neighbors in Minutes</title>
+    <meta name="description" content="LocalLoot is a hyperlocal marketplace where you can buy and sell within 2km of your home. Connect with verified neighbors for instant local deals." />
+    <link rel="icon" type="image/x-icon" href="public/favicon.ico" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet" />
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <style>
+        /* CSS Variables - LocalLoot Brand Colors */
+        :root {
+            /* Core System Colors */
+            --color-background: #FAFAFA;
+            --color-foreground: #1A1A1A;
+            --color-border: #E5E7EB;
+            --color-input: #FFFFFF;
+            --color-ring: #FF6B35;
+            
+            /* Card Colors */
+            --color-card: #FFFFFF;
+            --color-card-foreground: #1A1A1A;
+            
+            /* Muted Colors */
+            --color-muted: #F3F4F6;
+            --color-muted-foreground: #6B7280;
+            
+            /* Primary Colors - Community Orange */
+            --color-primary: #FF6B35;
+            --color-primary-foreground: #FFFFFF;
+            
+            /* Secondary Colors - Trust Blue */
+            --color-secondary: #2E86AB;
+            --color-secondary-foreground: #FFFFFF;
+            
+            /* Success Colors - Earnings Green */
+            --color-success: #10B981;
+            --color-success-foreground: #FFFFFF;
+            
+            /* Warning Colors */
+            --color-warning: #F59E0B;
+            --color-warning-foreground: #FFFFFF;
+            
+            /* Error Colors */
+            --color-error: #EF4444;
+            --color-error-foreground: #FFFFFF;
+            
+            /* LocalLoot Brand Colors */
+            --color-surface-clean: #FAFAFA;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-foreground);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Utility Classes */
+        .hidden { display: none; }
+        .block { display: block; }
+        .flex { display: flex; }
+        .grid { display: grid; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .text-center { text-align: center; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-2xl { border-radius: 1rem; }
+        .rounded-full { border-radius: 9999px; }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+
+        /* Typography */
+        h1 { font-size: 3rem; font-weight: 700; line-height: 1.2; }
+        h2 { font-size: 2.25rem; font-weight: 700; line-height: 1.25; }
+        h3 { font-size: 1.5rem; font-weight: 600; line-height: 1.3; }
+        .text-lg { font-size: 1.125rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; }
+
+        /* Colors */
+        .text-primary { color: var(--color-primary); }
+        .text-muted { color: var(--color-muted-foreground); }
+        .text-success { color: var(--color-success); }
+        .text-secondary { color: var(--color-secondary); }
+        .bg-primary { background-color: var(--color-primary); }
+        .bg-white { background-color: white; }
+        .bg-muted { background-color: var(--color-muted); }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 250ms ease-out;
+            text-decoration: none;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: var(--color-primary-foreground);
+            padding: 0.625rem 2rem;
+            height: 2.75rem;
+        }
+
+        .btn-primary:hover {
+            background-color: rgba(255, 107, 53, 0.9);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--color-border);
+            background-color: white;
+            color: var(--color-foreground);
+            padding: 0.625rem 2rem;
+            height: 2.75rem;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-muted);
+        }
+
+        .btn-lg {
+            height: 2.75rem;
+            padding: 0.625rem 2rem;
+        }
+
+        .cta-shadow {
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.15);
+        }
+
+        .card-shadow {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--color-surface-clean) 0%, white 50%, #f9fafb 100%);
+            padding: 5rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            background-color: rgba(255, 107, 53, 0.1);
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-primary);
+            width: fit-content;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--color-foreground);
+        }
+
+        @media (min-width: 1024px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+        }
+
+        .hero-description {
+            font-size: 1.125rem;
+            color: var(--color-muted-foreground);
+            max-width: 28rem;
+        }
+
+        /* Toggle CTAs */
+        .toggle-container {
+            display: flex;
+            background-color: var(--color-muted);
+            border-radius: 0.5rem;
+            padding: 0.25rem;
+            max-width: 20rem;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: none;
+            background: transparent;
+            color: var(--color-muted-foreground);
+            cursor: pointer;
+            transition: all 250ms ease-out;
+        }
+
+        .toggle-btn.active {
+            background-color: white;
+            color: var(--color-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .action-buttons {
+                flex-direction: row;
+            }
+        }
+
+        /* Trust Bar */
+        .trust-bar {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .trust-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--color-muted-foreground);
+        }
+
+        /* Interactive Map */
+        .map-container {
+            position: relative;
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .map-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .map-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--color-foreground);
+        }
+
+        .location-status {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--color-success);
+        }
+
+        .status-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            background-color: var(--color-success);
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        .map-visual {
+            position: relative;
+            background: linear-gradient(135deg, #dbeafe 0%, #dcfce7 100%);
+            border-radius: 0.75rem;
+            height: 20rem;
+            overflow: hidden;
+        }
+
+        .map-pin {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            animation: bounce 2s infinite;
+        }
+
+        .pin-icon {
+            width: 2rem;
+            height: 2rem;
+            background-color: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .pin-tooltip {
+            position: absolute;
+            top: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--color-border);
+            min-width: max-content;
+        }
+
+        .pin-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -0.25rem;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 0.5rem;
+            height: 0.5rem;
+            background-color: white;
+            border-left: 1px solid var(--color-border);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .tooltip-amount {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-foreground);
+        }
+
+        .tooltip-item {
+            font-size: 0.75rem;
+            color: var(--color-muted-foreground);
+        }
+
+        .location-indicator {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-description {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--color-muted-foreground);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% { transform: translate(-50%, -50%) translateY(0); }
+            40%, 43% { transform: translate(-50%, -50%) translateY(-15px); }
+            70% { transform: translate(-50%, -50%) translateY(-7px); }
+            90% { transform: translate(-50%, -50%) translateY(-2px); }
+        }
+
+        /* Icon styling */
+        .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Background Elements */
+        .bg-element-1 {
+            position: absolute;
+            top: 5rem;
+            right: 2.5rem;
+            width: 5rem;
+            height: 5rem;
+            background-color: rgba(255, 107, 53, 0.05);
+            border-radius: 50%;
+            filter: blur(1rem);
+        }
+
+        .bg-element-2 {
+            position: absolute;
+            bottom: 5rem;
+            left: 2.5rem;
+            width: 8rem;
+            height: 8rem;
+            background-color: rgba(46, 134, 171, 0.05);
+            border-radius: 50%;
+            filter: blur(1rem);
+        }
+    </style>
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Flocalloot2374back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav style="position: fixed; top: 0; left: 0; right: 0; background: white; border-bottom: 1px solid var(--color-border); z-index: 50; height: 5rem;">
+        <div class="container" style="height: 100%; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center;">
+                <div style="width: 3rem; height: 3rem; background: var(--color-primary); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem;">
+                    <i data-lucide="map-pin" style="color: white; width: 1.5rem; height: 1.5rem;"></i>
+                </div>
+                <span style="font-size: 1.5rem; font-weight: 700; color: var(--color-foreground);">LocalLoot</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="#" class="btn btn-outline">Browse Items</a>
+                <button class="btn btn-primary" onclick="showSignupPage()">Get Started</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Landing Page -->
+    <div id="landing-page">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-grid">
+                    <!-- Left Side - Content -->
+                    <div class="hero-content">
+                        <div>
+                            <div class="hero-badge">
+                                <i data-lucide="map-pin" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                                Hyperlocal Marketplace
+                            </div>
+                            
+                            <h1 class="hero-title">
+                                Sell to Your Neighbors in 
+                                <span class="text-primary">Minutes</span>
+                            </h1>
+                            
+                            <p class="hero-description">
+                                No shipping, no waiting - buy and sell within 2km of your home. 
+                                Connect with verified neighbors for instant local deals.
+                            </p>
+                        </div>
+
+                        <!-- Toggle CTAs -->
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div class="toggle-container">
+                                <button id="sell-tab" class="toggle-btn active" onclick="setActiveTab('sell')">
+                                    I want to Sell
+                                </button>
+                                <button id="buy-tab" class="toggle-btn" onclick="setActiveTab('buy')">
+                                    I want to Buy
+                                </button>
+                            </div>
+
+                            <div class="action-buttons">
+                                <button id="main-cta" class="btn btn-primary btn-lg cta-shadow" onclick="handleCTAClick()">
+                                    <i data-lucide="arrow-right" style="width: 1rem; height: 1rem; margin-left: 0.5rem;"></i>
+                                    Start Selling Today
+                                </button>
+                                <button class="btn btn-outline btn-lg">
+                                    <i data-lucide="search" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                                    Browse Items
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Trust Bar -->
+                        <div class="trust-bar">
+                            <div class="trust-metrics">
+                                <div>
+                                    <div class="metric-value">2,847</div>
+                                    <div class="metric-label">Active sellers in Mumbai</div>
+                                </div>
+                                <div>
+                                    <div class="metric-value text-success">1,256</div>
+                                    <div class="metric-label">Items sold this week</div>
+                                </div>
+                                <div>
+                                    <div class="metric-value text-secondary">1.5 hours</div>
+                                    <div class="metric-label">Average pickup time</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side - Interactive Map -->
+                    <div>
+                        <div class="map-container">
+                            <div class="map-header">
+                                <h3 class="map-title">Live Neighborhood Activity</h3>
+                                <div class="location-status">
+                                    <div class="status-dot"></div>
+                                    <span id="location-text">Detecting...</span>
+                                </div>
+                            </div>
+                            
+                            <div class="map-visual">
+                                <!-- Map Background SVG -->
+                                <svg style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.2;" viewBox="0 0 100 100">
+                                    <path d="M10,20 Q30,10 50,20 T90,20" stroke="#2E86AB" stroke-width="0.5" fill="none"/>
+                                    <path d="M20,40 Q40,30 60,40 T100,40" stroke="#2E86AB" stroke-width="0.5" fill="none"/>
+                                    <path d="M5,60 Q25,50 45,60 T85,60" stroke="#2E86AB" stroke-width="0.5" fill="none"/>
+                                    <path d="M15,80 Q35,70 55,80 T95,80" stroke="#2E86AB" stroke-width="0.5" fill="none"/>
+                                </svg>
+
+                                <!-- Transaction Pins -->
+                                <div class="map-pin" style="left: 25%; top: 30%; animation-delay: 0s;">
+                                    <div class="pin-icon">
+                                        <i data-lucide="map-pin" style="color: white; width: 1rem; height: 1rem;"></i>
+                                    </div>
+                                    <div class="pin-tooltip">
+                                        <div class="tooltip-amount">₹2,500</div>
+                                        <div class="tooltip-item">iPhone 12</div>
+                                    </div>
+                                </div>
+
+                                <div class="map-pin" style="left: 60%; top: 45%; animation-delay: 0.5s;">
+                                    <div class="pin-icon">
+                                        <i data-lucide="map-pin" style="color: white; width: 1rem; height: 1rem;"></i>
+                                    </div>
+                                    <div class="pin-tooltip">
+                                        <div class="tooltip-amount">₹8,000</div>
+                                        <div class="tooltip-item">Sofa Set</div>
+                                    </div>
+                                </div>
+
+                                <div class="map-pin" style="left: 40%; top: 65%; animation-delay: 1s;">
+                                    <div class="pin-icon">
+                                        <i data-lucide="map-pin" style="color: white; width: 1rem; height: 1rem;"></i>
+                                    </div>
+                                    <div class="pin-tooltip">
+                                        <div class="tooltip-amount">₹1,200</div>
+                                        <div class="tooltip-item">Study Table</div>
+                                    </div>
+                                </div>
+
+                                <div class="map-pin" style="left: 75%; top: 25%; animation-delay: 1.5s;">
+                                    <div class="pin-icon">
+                                        <i data-lucide="map-pin" style="color: white; width: 1rem; height: 1rem;"></i>
+                                    </div>
+                                    <div class="pin-tooltip">
+                                        <div class="tooltip-amount">₹3,500</div>
+                                        <div class="tooltip-item">Laptop</div>
+                                    </div>
+                                </div>
+
+                                <div class="map-pin" style="left: 15%; top: 70%; animation-delay: 2s;">
+                                    <div class="pin-icon">
+                                        <i data-lucide="map-pin" style="color: white; width: 1rem; height: 1rem;"></i>
+                                    </div>
+                                    <div class="pin-tooltip">
+                                        <div class="tooltip-amount">₹800</div>
+                                        <div class="tooltip-item">Books</div>
+                                    </div>
+                                </div>
+
+                                <!-- Location Indicator -->
+                                <div class="location-indicator">
+                                    <div style="display: flex; align-items: center; font-size: 0.875rem;">
+                                        <i data-lucide="navigation" style="color: var(--color-primary); width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                                        <span style="font-weight: 500; color: var(--color-foreground);">Mumbai</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="map-description">
+                                <p>Real transactions happening in your neighborhood right now</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Background Elements -->
+            <div class="bg-element-1"></div>
+            <div class="bg-element-2"></div>
+        </section>
+    </div>
+
+    <!-- Signup Page -->
+    <div id="signup-page" class="hidden" style="min-height: 100vh; background-color: #f9fafb;">
+        <!-- Navigation for signup -->
+        <nav style="position: fixed; top: 0; left: 0; right: 0; background: white; border-bottom: 1px solid var(--color-border); z-index: 50; height: 5rem;">
+            <div class="container" style="height: 100%; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 3rem; height: 3rem; background: var(--color-primary); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem;">
+                        <i data-lucide="map-pin" style="color: white; width: 1.5rem; height: 1.5rem;"></i>
+                    </div>
+                    <span style="font-size: 1.5rem; font-weight: 700; color: var(--color-foreground);">LocalLoot</span>
+                </div>
+                <div>
+                    <button class="btn btn-outline" onclick="showLandingPage()">
+                        <i data-lucide="arrow-left" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                        Back to Home
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div style="padding-top: 5rem; padding-bottom: 4rem;">
+            <div style="max-width: 28rem; margin: 0 auto; padding: 0 1rem;">
+                <div style="background: white; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); padding: 2rem;">
+                    <!-- Header -->
+                    <div class="text-center" style="margin-bottom: 2rem;">
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <div style="width: 3rem; height: 3rem; background: var(--color-primary); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;">
+                                <i data-lucide="map-pin" style="color: white; width: 1.5rem; height: 1.5rem;"></i>
+                            </div>
+                        </div>
+                        <h1 style="font-size: 1.5rem; font-weight: 700; color: var(--color-foreground); margin-bottom: 0.5rem;">
+                            Join LocalLoot
+                        </h1>
+                        <p class="text-muted">
+                            Create your account and start <span id="user-type-text">selling</span> locally
+                        </p>
+                    </div>
+
+                    <!-- Progress Indicator -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
+                        <div class="text-sm text-muted">
+                            Step <span id="current-step">1</span> of 2
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <div id="step-1-dot" style="width: 0.75rem; height: 0.75rem; border-radius: 50%; background-color: var(--color-primary);"></div>
+                            <div id="step-2-dot" style="width: 0.75rem; height: 0.75rem; border-radius: 50%; background-color: #d1d5db;"></div>
+                        </div>
+                    </div>
+
+                    <!-- User Type Indicator -->
+                    <div style="margin-bottom: 1.5rem; padding: 1rem; background-color: rgba(255, 107, 53, 0.05); border-radius: 0.5rem;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center;">
+                                <i id="user-type-icon" data-lucide="store" style="color: var(--color-primary); width: 1.25rem; height: 1.25rem; margin-right: 0.5rem;"></i>
+                                <span style="font-weight: 500; color: var(--color-foreground);">
+                                    Signing up as <span id="user-type-label">Seller</span>
+                                </span>
+                            </div>
+                            <button onclick="switchUserType()" style="font-size: 0.875rem; color: var(--color-primary); background: none; border: none; cursor: pointer;">
+                                Switch
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div id="error-message" class="hidden" style="margin-bottom: 1rem; padding: 0.75rem; background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 0.5rem;">
+                        <p style="font-size: 0.875rem; color: #dc2626; display: flex; align-items: center;">
+                            <i data-lucide="alert-circle" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                            <span id="error-text"></span>
+                        </p>
+                    </div>
+
+                    <!-- Social Signup -->
+                    <div id="social-signup" style="margin-bottom: 1.5rem;">
+                        <button class="btn btn-outline" style="width: 100%;" onclick="handleGoogleSignup()">
+                            <i data-lucide="mail" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                            Continue with Google
+                        </button>
+                        
+                        <div style="position: relative; margin-top: 1rem;">
+                            <div style="position: absolute; inset: 0; display: flex; align-items: center;">
+                                <div style="width: 100%; border-top: 1px solid #d1d5db;"></div>
+                            </div>
+                            <div style="position: relative; display: flex; justify-content: center; font-size: 0.875rem;">
+                                <span style="padding: 0 0.5rem; background: white; color: var(--color-muted-foreground);">Or create account with email</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form -->
+                    <form id="signup-form" onsubmit="handleSubmit(event)">
+                        <!-- Step 1: Account Details -->
+                        <div id="step-1" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div>
+                                <label for="name" style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--color-foreground); margin-bottom: 0.25rem;">Full Name</label>
+                                <input type="text" id="name" name="name" placeholder="Enter your full name" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: 0.375rem; font-size: 0.875rem; background: white;" />
+                            </div>
+
+                            <div>
+                                <label for="email" style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--color-foreground); margin-bottom: 0.25rem;">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="Enter your email" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: 0.375rem; font-size: 0.875rem; background: white;" />
+                                <p style="font-size: 0.75rem; color: var(--color-muted-foreground); margin-top: 0.25rem;">We'll send a verification email to this address</p>
+                            </div>
+
+                            <div>
+                                <label for="password" style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--color-foreground); margin-bottom: 0.25rem;">Password</label>
+                                <input type="password" id="password" name="password" placeholder="Create a strong password" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: 0.375rem; font-size: 0.875rem; background: white;" />
+                                <p style="font-size: 0.75rem; color: var(--color-muted-foreground); margin-top: 0.25rem;">Minimum 6 characters</p>
+                            </div>
+
+                            <div>
+                                <label for="confirm-password" style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--color-foreground); margin-bottom: 0.25rem;">Confirm Password</label>
+                                <input type="password" id="confirm-password" name="confirmPassword" placeholder="Re-enter your password" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: 0.375rem; font-size: 0.875rem; background: white;" oninput="checkPasswordMatch()" />
+                                <p id="password-error" class="hidden" style="font-size: 0.75rem; color: #dc2626; margin-top: 0.25rem;">Passwords do not match</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Profile Details -->
+                        <div id="step-2" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div>
+                                <label for="phone" style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--color-foreground); margin-bottom: 0.25rem;">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: 0.375rem; font-size: 0.875rem; background: white;" />
+                                <p style="font-size: 0.75rem; color: var(--color-muted-foreground); margin-top: 0.25rem;">For order updates and quick communication</p>
+                            </div>
+
+                            <div>
+                                <label for="location" style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--color-foreground); margin-bottom: 0.25rem;">Location</label>
+                                <input type="text" id="location" name="location" placeholder="Enter your area/neighborhood" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: 0.375rem; font-size: 0.875rem; background: white;" />
+                                <p style="font-size: 0.75rem; color: var(--color-muted-foreground); margin-top: 0.25rem;">We'll show items within 2km of this location</p>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                <label style="display: flex; align-items: center; font-size: 0.875rem;">
+                                    <input type="checkbox" id="agree-terms" name="agreeTerms" required style="width: 1rem; height: 1rem; margin-right: 0.5rem; accent-color: var(--color-primary);" />
+                                    I agree to the Terms of Service and Privacy Policy
+                                </label>
+                                
+                                <label style="display: flex; align-items: center; font-size: 0.875rem;">
+                                    <input type="checkbox" id="agree-marketing" name="agreeMarketing" checked style="width: 1rem; height: 1rem; margin-right: 0.5rem; accent-color: var(--color-primary);" />
+                                    I'd like to receive updates about new items and offers
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div style="display: flex; justify-content: space-between; padding-top: 1rem;">
+                            <button type="button" id="prev-btn" class="btn btn-outline hidden" onclick="prevStep()">
+                                <i data-lucide="chevron-left" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                                Previous
+                            </button>
+                            
+                            <button type="button" id="next-btn" class="btn btn-primary" onclick="nextStep()" style="margin-left: auto;">
+                                Next Step
+                                <i data-lucide="chevron-right" style="width: 1rem; height: 1rem; margin-left: 0.5rem;"></i>
+                            </button>
+                            
+                            <button type="submit" id="submit-btn" class="btn btn-primary cta-shadow hidden" style="margin-left: auto;">
+                                <i data-lucide="user-plus" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                                <span id="submit-text">Create Account</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Sign In Link -->
+                    <div class="text-center" style="margin-top: 1.5rem;">
+                        <p class="text-sm text-muted">
+                            Already have an account?
+                            <a href="#" onclick="showLoginPage()" style="color: var(--color-primary); font-weight: 500; text-decoration: none;">
+                                Sign in here
+                            </a>
+                        </p>
+                    </div>
+
+                    <!-- Trust Indicators -->
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; font-size: 0.75rem; color: var(--color-muted-foreground);">
+                            <div style="display: flex; align-items: center;">
+                                <i data-lucide="shield" style="color: var(--color-success); width: 0.875rem; height: 0.875rem; margin-right: 0.25rem;"></i>
+                                Secure Signup
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <i data-lucide="lock" style="color: var(--color-primary); width: 0.875rem; height: 0.875rem; margin-right: 0.25rem;"></i>
+                                Encrypted
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <i data-lucide="users" style="color: var(--color-secondary); width: 0.875rem; height: 0.875rem; margin-right: 0.25rem;"></i>
+                                15K+ Members
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Global state
+        let currentStep = 1;
+        let activeTab = 'sell';
+        let userType = 'seller';
+        let isLoading = false;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate location detection after 1.5 seconds
+            setTimeout(() => {
+                document.getElementById('location-text').textContent = 'Location Detected';
+            }, 1500);
+        });
+
+        // Tab switching functionality
+        function setActiveTab(tab) {
+            activeTab = tab;
+            
+            // Update tab buttons
+            document.getElementById('sell-tab').classList.toggle('active', tab === 'sell');
+            document.getElementById('buy-tab').classList.toggle('active', tab === 'buy');
+            
+            // Update CTA button
+            const ctaButton = document.getElementById('main-cta');
+            const ctaText = tab === 'sell' ? 'Start Selling Today' : 'Find Local Deals';
+            ctaButton.innerHTML = ctaText + ' <i data-lucide="arrow-right" style="width: 1rem; height: 1rem; margin-left: 0.5rem;"></i>';
+            
+            // Re-initialize icons
+            lucide.createIcons();
+        }
+
+        // CTA button click handler
+        function handleCTAClick() {
+            userType = activeTab === 'sell' ? 'seller' : 'buyer';
+            showSignupPage();
+        }
+
+        // Page navigation
+        function showSignupPage() {
+            document.getElementById('landing-page').classList.add('hidden');
+            document.getElementById('signup-page').classList.remove('hidden');
+            updateUserTypeDisplay();
+            lucide.createIcons();
+        }
+
+        function showLandingPage() {
+            document.getElementById('signup-page').classList.add('hidden');
+            document.getElementById('landing-page').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function showLoginPage() {
+            alert('Login page would be implemented separately');
+        }
+
+        // User type management
+        function updateUserTypeDisplay() {
+            const isSellerType = userType === 'seller';
+            
+            document.getElementById('user-type-text').textContent = isSellerType ? 'selling' : 'buying';
+            document.getElementById('user-type-label').textContent = isSellerType ? 'Seller' : 'Buyer';
+            document.getElementById('user-type-icon').setAttribute('data-lucide', isSellerType ? 'store' : 'search');
+            
+            lucide.createIcons();
+        }
+
+        function switchUserType() {
+            userType = userType === 'seller' ? 'buyer' : 'seller';
+            updateUserTypeDisplay();
+        }
+
+        // Step navigation
+        function nextStep() {
+            if (currentStep < 2 && isStepValid()) {
+                currentStep = 2;
+                updateStepDisplay();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep = 1;
+                updateStepDisplay();
+            }
+        }
+
+        function updateStepDisplay() {
+            // Update step indicator
+            document.getElementById('current-step').textContent = currentStep;
+            document.getElementById('step-1-dot').style.backgroundColor = currentStep >= 1 ? 'var(--color-primary)' : '#d1d5db';
+            document.getElementById('step-2-dot').style.backgroundColor = currentStep >= 2 ? 'var(--color-primary)' : '#d1d5db';
+            
+            // Show/hide steps
+            document.getElementById('step-1').style.display = currentStep === 1 ? 'flex' : 'none';
+            document.getElementById('step-2').style.display = currentStep === 2 ? 'flex' : 'none';
+            document.getElementById('step-1').classList.toggle('hidden', currentStep !== 1);
+            document.getElementById('step-2').classList.toggle('hidden', currentStep !== 2);
+            
+            // Show/hide social signup only on step 1
+            document.getElementById('social-signup').style.display = currentStep === 1 ? 'block' : 'none';
+            
+            // Update navigation buttons
+            document.getElementById('prev-btn').classList.toggle('hidden', currentStep === 1);
+            document.getElementById('next-btn').classList.toggle('hidden', currentStep === 2);
+            document.getElementById('submit-btn').classList.toggle('hidden', currentStep === 1);
+        }
+
+        // Form validation
+        function isStepValid() {
+            if (currentStep === 1) {
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                return name && email && password && confirmPassword && password === confirmPassword;
+            } else if (currentStep === 2) {
+                const phone = document.getElementById('phone').value.trim();
+                const location = document.getElementById('location').value.trim();
+                const agreeTerms = document.getElementById('agree-terms').checked;
+                
+                return phone && location && agreeTerms;
+            }
+            return false;
+        }
+
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const errorElement = document.getElementById('password-error');
+            
+            if (confirmPassword && password !== confirmPassword) {
+                errorElement.classList.remove('hidden');
+            } else {
+                errorElement.classList.add('hidden');
+            }
+        }
+
+        // Error handling
+        function showError(message) {
+            document.getElementById('error-text').textContent = message;
+            document.getElementById('error-message').classList.remove('hidden');
+        }
+
+        function hideError() {
+            document.getElementById('error-message').classList.add('hidden');
+        }
+
+        // Form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            if (!isStepValid()) {
+                showError('Please fill in all required fields correctly');
+                return;
+            }
+            
+            hideError();
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                password: document.getElementById('password').value,
+                phone: document.getElementById('phone').value.trim(),
+                location: document.getElementById('location').value.trim(),
+                userType: userType,
+                agreeTerms: document.getElementById('agree-terms').checked,
+                agreeMarketing: document.getElementById('agree-marketing').checked
+            };
+            
+            // Simulate loading
+            setLoading(true);
+            
+            // Simulate API call
+            setTimeout(() => {
+                setLoading(false);
+                alert(`Account created successfully!\n\nEmail: ${formData.email}\nType: ${formData.userType}\n\nIn a real app, you would be redirected to email verification.`);
+            }, 2000);
+        }
+
+        function setLoading(loading) {
+            isLoading = loading;
+            const submitBtn = document.getElementById('submit-btn');
+            const submitText = document.getElementById('submit-text');
+            
+            submitBtn.disabled = loading;
+            submitText.textContent = loading ? 'Creating Account...' : 'Create Account';
+            
+            if (loading) {
+                submitBtn.style.opacity = '0.7';
+            } else {
+                submitBtn.style.opacity = '1';
+            }
+        }
+
+        function handleGoogleSignup() {
+            alert('Google signup would be implemented with actual OAuth integration');
+        }
+
+        // Initialize icons after page load
+        setTimeout(() => {
+            lucide.createIcons();
+        }, 100);
+    </script>
+</body>
+</html>
